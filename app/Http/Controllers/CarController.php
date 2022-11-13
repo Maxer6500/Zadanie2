@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarValidation;
 use App\Models\Car;
 use Dotenv\Parser\Value;
 use Dotenv\Validator;
@@ -40,20 +41,13 @@ class CarController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  CarValidation $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CarValidation $request): RedirectResponse
     {
-        $validate = $request->validate([
-            'name' => 'required|max:100',
-            'model' => 'required|max:150',
-            'description' => 'required|max:1000',
-            'type' => 'required',
-            'price' => 'required|numeric|min:0|max:99999999',
-        ]);
 
-        $car = new Car($request->all());
+        $car = new Car($request->validated());
         $car->save();
         return redirect(route('cars.index'));
     }
@@ -75,7 +69,6 @@ class CarController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Car $car
-     * @param  Value $value
      * @return View
      */
     public function edit(Car $car): View
@@ -88,21 +81,14 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
+     * @param  CarValidation  $request
      * @param  Car  $car
      * @return RedirectResponse
      */
-    public function update(Request $request, Car $car): RedirectResponse
+    public function update(CarValidation $request, Car $car): RedirectResponse
     {
-        $validate = $request->validate([
-            'name' => 'required|max:100',
-            'model' => 'required|max:150',
-            'description' => 'required|max:1000',
-            'type' => 'required',
-            'price' => 'required|numeric|min:0|max:99999999',
-        ]);
 
-        $car->fill($request->all());
+        $car->fill($request->validated());
         $car->save();
         return redirect(route('cars.index'));
     }
