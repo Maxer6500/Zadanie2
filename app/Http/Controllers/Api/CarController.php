@@ -16,7 +16,7 @@ class CarController extends Controller
 {
     public function index()
     {
-        return Car::all();
+        return response()->json(Car::all(), 200);
     }
 
     public function store(CarValidation $request): \Illuminate\Http\JsonResponse
@@ -28,13 +28,13 @@ class CarController extends Controller
             'type' => $request->type,
             'price' => $request->price,
         ]);
-        return response()->json($car, 201);
+        return response()->json($car, 200);
     }
 
     public function show(Car $car)
     {
 
-        return $car;
+        return response()->json($car, 200);
     }
 
     public function destroy()
