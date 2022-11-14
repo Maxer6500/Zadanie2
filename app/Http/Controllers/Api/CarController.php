@@ -8,6 +8,7 @@ use App\Http\Requests\CarValidation;
 use App\Models\Car;
 use App\Models\User;
 use http\Env\Request;
+use http\Env\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +19,7 @@ class CarController extends Controller
         return Car::all();
     }
 
-    public function store(CarValidation $request): Car
+    public function store(CarValidation $request): \Illuminate\Http\JsonResponse
     {
         $car = Car::create([
             'name' => $request->name,
@@ -27,7 +28,7 @@ class CarController extends Controller
             'type' => $request->type,
             'price' => $request->price,
         ]);
-        return $car;
+        return response()->json($car, 201);
     }
 
     public function show(Car $car)
