@@ -47,8 +47,13 @@ class CarController extends Controller
     public function store(CarValidation $request): RedirectResponse
     {
 
-        $car = new Car($request->validated());
-        $car->save();
+       Car::create([
+            'name' => $request->name,
+            'model' => $request->model,
+            'description' => $request->description,
+            'type' => $request->type,
+            'price' => $request->price,
+        ]);
         return redirect(route('cars.index'));
     }
 
@@ -88,21 +93,28 @@ class CarController extends Controller
     public function update(CarValidation $request, Car $car): RedirectResponse
     {
 
-        $car->fill($request->validated());
-        $car->save();
+        $car->update([
+            'name' => $request->name,
+            'model' => $request->model,
+            'description' => $request->description,
+            'type' => $request->type,
+            'price' => $request->price,
+        ]);
         return redirect(route('cars.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Car  $car
+     * @param $id
      * @return RedirectResponse
      */
-    public function destroy(Request $request, Car $car): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
-        $car->fill($request->all());
+
+        $car = Car::find($id);
         $car->delete();
+
 
         return redirect()->route('cars.index');
     }

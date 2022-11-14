@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CarValidation;
 use App\Models\Car;
 use App\Models\User;
 use http\Env\Request;
@@ -17,11 +18,15 @@ class CarController extends Controller
         return Car::all();
     }
 
-    public function store(\Illuminate\Http\Request $request): Car
+    public function store(CarValidation $request): Car
     {
-        $car = new Car($request->all());
-        $car->save();
-
+        $car = Car::create([
+            'name' => $request->name,
+            'model' => $request->model,
+            'description' => $request->description,
+            'type' => $request->type,
+            'price' => $request->price,
+        ]);
         return $car;
     }
 
